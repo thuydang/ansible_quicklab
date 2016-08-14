@@ -1,0 +1,34 @@
+# file: tutorial.yml
+#
+# play_name: kvm_host_start.yml
+# desc: Setup VLANs and Bridges for kvm networks.
+# modules:
+#   - nmcli
+
+---
+- hosts: tutorial_hosts
+  roles:
+    - common
+  vars:
+    http_port: 80
+    max_clients: 200
+  tasks:
+    - name: ensure apache is running
+      service: 
+        name=httpd
+        state=started
+      become: true
+
+    - name: disable selinux
+      command: /sbin/setenforce 0
+      ignore_errors: True
+      become: true
+      notify: 
+        - "restart apache"
+
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+      # listen: restart_apache # not working
+      become: true
+
