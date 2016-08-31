@@ -1,0 +1,15 @@
+---
+# Install KVM virtualization packages
+
+- name: "Stage 1: install KVM on RedHat/CentOS"
+  include: 'install_rhel.yml'
+  when: ansible_os_family == 'RedHat' and (ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS')
+
+- name: "Stage 1: install KVM on Fedora dnf"
+  include: 'install_fedora.yml'
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'
+
+- name: "Stage 1: install KVM on Debian/Ubuntu"
+  include: 'install_deb.yml'
+  when: ansible_os_family == 'Debian'
+

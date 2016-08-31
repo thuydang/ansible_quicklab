@@ -13,21 +13,12 @@
     max_clients: 200
   roles:
     - common
-    - kvm.host
+    - kvm_host
+    - role: kvm_network_vlan
+      vlan_id: 1
+      netmask: 192.168.100.0/24
+
   tasks:
-    - name: ensure apache is running
-      service: 
-        name=httpd
-        state=started
-      become: true
-
-    - name: disable selinux
-      command: /sbin/setenforce 0
-      ignore_errors: True
-      become: true
-      notify: 
-        - "restart apache"
-
   handlers:
     - name: restart apache
       service: name=httpd state=restarted

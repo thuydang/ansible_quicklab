@@ -12,6 +12,10 @@ e.g., OpenStack.
 
 3. Custom scripts for VMs installation
 
+= Roles:
+== kvm_host: setup kvm host
+== kvm_network_vlan: create vlan interface
+
 = Design decisions:
 * Inventory files hold hosts group, each of which has a playbook, e.g., baremetal inventory, baremetal.yml
 
@@ -19,6 +23,8 @@ e.g., OpenStack.
 
 ansible-playbook -i inventory_file site.yml --limit tutorial_hosts
 ansible-playbook -i inventory_file  tutorial.yml
+
+ansible localhost -i inventory/vfoss_dev -m alternatives -a "link=/usr/bin/psql name=pgsql-psql path=/usr/pgsql-9.4/bin/psql" -s -vvvv
 ----------
 REF
 

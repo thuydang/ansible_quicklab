@@ -1,0 +1,40 @@
+- name: Check OS support
+  #debug: msg="The following OS family {{ ansible_os_family }} {{ ansible_architecture }} is not supported" fail=yes # error: "'fail' is not a valid option in debug"
+  fail: msg="The following OS family {{ ansible_os_family }} {{ ansible_architecture }} is not supported"
+  when: not ansible_os_family == "RedHat" or not ansible_distribution == "Fedora" or not ansible_architecture == "x86_64"
+
+- debug: msg="OS Check... PASSED"
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora" and ansible_architecture == "x86_64"
+
+- name: Check package manager support
+  fail: msg="The following package manager {{ ansible_pkg_mgr }} is not supported"
+  when: not ansible_pkg_mgr == "dnf"
+
+- debug: msg="Pkg manager Check... PASSED"
+  when: ansible_pkg_mgr == "dnf"
+
+#- name: "Stage 1: install repository package"
+#  dnf:
+#    name: https://download.postgresql.org/pub/repos/yum/{{postgresql_version}}/{{ansible_distribution | lower}}/{{ansible_distribution | lower}}-{{ansible_distribution_version}}-{{ansible_architecture}}/pgdg-fedora{{ postgresql_version |replace('.', '') }}-{{ postgresql_version }}-4.noarch.rpm
+#    state: present
+
+- name: "Stage 1: install kvm packages"
+  dnf: 
+    state: latest
+    pkg: "{{ item }}"
+  with_items:
+    - qemu-kvm 
+    - libvirt 
+    - virt-install 
+    - bridge-utils
+    - vconfig
+    - libguestfs-tools 
+    - lsof 
+    - lvm2 
+    - ntp 
+    - ntpdate 
+    - openssh-server 
+    - sudo 
+    - tcpdump
+      #- kvm-ipxe
+

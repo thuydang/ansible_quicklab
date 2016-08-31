@@ -1,0 +1,16 @@
+# file: tasks/install_deb.yml -- install kvm packages for Debian/Ubuntu
+---
+#- include: 'postgresql_official_repo.yml'
+
+- name: "Stage 1: install kvm packages for Debian"
+  apt: 
+    state: latest
+    pkg: "{{ item }}"
+  with_items:
+    - vlan 
+    -  ifenslave 
+    -  ubuntu-virt-server 
+    -  python-vm-builder 
+    -  kvm-ipxe bridge-utils 
+    -  libguestfs-tools 
+    -  guestfish

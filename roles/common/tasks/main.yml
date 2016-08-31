@@ -17,3 +17,10 @@
   tags: ntp
   become: true
 
+- name: disable selinux
+      command: /sbin/setenforce 0
+      ignore_errors: True
+      become: true
+      notify: 
+        #  - "restart apache"
+
