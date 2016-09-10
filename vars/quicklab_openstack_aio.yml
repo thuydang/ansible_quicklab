@@ -1,8 +1,0 @@
----
-# Host vars. Roles: kvm_host
-vlan_networks: []
-
-# Openstack vars
-
-# Tennant vars
-

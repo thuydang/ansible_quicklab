@@ -1,4 +1,54 @@
 ---
 # main.yml tasks file for kvm_network
 
+- name: Stage 2 | KVM Network | Install needed network manager libs
+  dnf: name={{ item }} state=installed
+  with_items:
+    - NetworkManager-glib
+    - libnm-qt-devel.x86_64
+    - nm-connection-editor.x86_64
+    - libsemanage-python
+    - policycoreutils-python
+
+- name: Stage 2 | KVM Network | Configure host bridges
+  nmcli: type=bridge cname={{item.name}} ifname={{item.name}} ip4={{item.ip4}} gw4={{item.gw4}} state=present
+  become: yes
+  when: not (shutdown | default('no') | bool)
+  with_items:
+    - "{{kvm_networks}}"
+
+## if cname exists, nmcli mode is executed instead by nmcli module. This feature is not impelented, so the cname must be removed first. Use *_shutdown.yml playbook.
+- name: Stage 2 | KVM Network | Configure tap devices for VMs 
+  #debug: msg="VM name - {{ item.0.hostname }} and network ifaces - {{ item.1.name }} tap-{{item.0.hostname}}-{{item.1.name}} owner {{ansible_user_id}} "
+  # iface name maxlength 15.
+  nmcli: type=tun cname={{item.0.hostname}}-{{item.1.name}} \
+    slavetype=bridge master={{item.1.network_name}} \
+    owner={{ansible_user_uid}} mode=tap state=present
+  when: not (shutdown | default('no') | bool)
+  with_subelements: 
+    - '{{kvm_guests}}'
+    - network_interfaces
+
+  #- name: Stage 2 | KVM Network | Connect tap and bridges with "nmcli con mod"
+  #  nmcli: type=bridge-slave cname={{item.0.hostname}}-{{item.1.name}} master={{item.1.network_name}} state=present
+  #  with_subelements: 
+  #    - '{{kvm_guests}}'
+  #    - network_interfaces
+  #
+- name: Stage 2 | KVM Network | REMOVE host bridges
+  nmcli: type=bridge cname={{item.name}} ifname={{item.name}} ip4={{item.ip4}} gw4={{item.gw4}} state=absent
+  become: yes
+  when: (shutdown | default('no') | bool)
+  with_items:
+    - "{{kvm_networks}}"
+
+- name: Stage 2 | KVM Network | REMOVE tap devices for VMs 
+  nmcli: type=tun cname={{item.0.hostname}}-{{item.1.name}} \
+    slavetype=bridge master={{item.1.network_name}} \
+    owner={{ansible_user_id}} mode=tap state=absent
+  when: (shutdown | default('no') | bool)
+  with_subelements: 
+    - '{{kvm_guests}}'
+    - network_interfaces
+
 

@@ -1,0 +1,69 @@
+---
+quicklab_workspace: "/mnt/nfv/kvm_openstack_lab" 
+#Path, where the kvm VMs and related files are stored.
+
+### Host vars. Quicklab VMs
+# Roles: kvm_host
+
+
+# Quicklab Virtual network config
+kvm_networks: # Public / private virtual Bridges http://www.linux-kvm.org/page/Networking#Private_Virtual_Bridge
+  - name: br_ql_mgmt
+    ip4: 10.10.10.1/24
+    gw4:
+
+  - name: br_ql_int
+    ip4: 10.20.20.1/24
+    gw4:
+
+  - name: br_ql_ext
+    ip4: 10.30.30.1/24
+    gw4:
+# Quicklab VMs Config
+kvm_guests: # kvm quest vm 
+  - hostname: controller
+    network_interfaces: #ref: https://github.com/mrlesmithjr/ansible-config-interfaces
+      - name: eth0
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_mgmt # Bridge name to be connected
+#        wireless_network: false  #defines if the interface is a wireless interface...not working so keep false or not defined
+#        wpa_ssid: wireless  #defines the wireless SSID to connect to
+#        wpa_psk: wpapassword  #defines the wireless key
+#        addl_settings:
+#          - bond_master bond0
+      - name: eth1
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_int # Bridge name to be connected
+        #addl_settings:
+        #- bond_master bond0
+      - name: eth2
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_ext # Bridge name to be connected
+        #addl_settings:
+        #- bond_master bond2
+
+### Openstack vars
+
+### Tennant vars
+

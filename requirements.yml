@@ -1,0 +1,29 @@
+---
+# Install galaxy roles
+# #- src: mrlesmithjr.openvswitch
+# - src: mrlesmithjr.config-interfaces
+# - src: mrlesmithjr.kvm
+#
+
+# from github installing to a relative path
+#- src:  https://github.com/alcamie101/ansible-nmcli.git
+#  path: ./library/
+#
+# Install a role at a specific tag from GitHub
+# - name: opendaylight
+#   src: https://github.com/dfarrell07/ansible-opendaylight
+#   version: 1.0.0
+#
+# Install a role at a specific commit from GitHub
+# - name: opendaylight
+#   src: https://github.com/dfarrell07/ansible-opendaylight
+#   version: <commit hash>
+#
+## Checkout from master
+#- src:  https://gitlibrary_ext:hub.com/thuydang/ansible_nmcli_role.git
+#  path: library_ext/
+#
+## checkout from branch
+- src:  https://github.com/thuydang/ansible-nmcli.git
+  version: origin/ansible-nmcli-role
+  path: library_ext/

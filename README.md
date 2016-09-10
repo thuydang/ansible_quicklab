@@ -13,8 +13,17 @@ e.g., OpenStack.
 3. Custom scripts for VMs installation
 
 = Roles:
-== kvm_host: setup kvm host
-== kvm_network_vlan: create vlan interface
+== kvm_host_setup: 
+* Install packages on kvm host
+
+== kvm_network: 
+* create bridges and tap/tun interfaces for the VMs
+* The variables allows to see how the network is configured (default/main.yml):
+
+== kvm_manage: 
+* Start the vms
+* The variables: 
+
 
 = Design decisions:
 * Inventory files hold hosts group, each of which has a playbook, e.g., baremetal inventory, baremetal.yml

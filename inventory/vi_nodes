@@ -1,2 +1,7 @@
 [vi_nodes]
 localhost              ansible_connection=local
+
+[openstack_nodes]
+control
+network
+compute

@@ -7,10 +7,15 @@
     state: latest
     pkg: "{{ item }}"
   with_items:
-    - vlan 
-    -  ifenslave 
-    -  ubuntu-virt-server 
-    -  python-vm-builder 
-    -  kvm-ipxe bridge-utils 
-    -  libguestfs-tools 
-    -  guestfish
+    - bridge-utils
+    - ifenslave
+    - libvirt-bin
+    - lldpd
+    - python-libvirt
+    - python-lxml
+    - qemu-kvm
+    - ubuntu-vm-builder
+    - vlan
+    - kvm-ipxe
+    - libguestfs-tools 
+    - guestfish

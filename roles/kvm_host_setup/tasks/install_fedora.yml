@@ -18,7 +18,7 @@
 #    name: https://download.postgresql.org/pub/repos/yum/{{postgresql_version}}/{{ansible_distribution | lower}}/{{ansible_distribution | lower}}-{{ansible_distribution_version}}-{{ansible_architecture}}/pgdg-fedora{{ postgresql_version |replace('.', '') }}-{{ postgresql_version }}-4.noarch.rpm
 #    state: present
 
-- name: "Stage 1: install kvm packages"
+- name: "Stage 1 | KVM | Install kvm packages"
   dnf: 
     state: latest
     pkg: "{{ item }}"

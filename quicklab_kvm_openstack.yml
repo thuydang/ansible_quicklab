@@ -1,0 +1,17 @@
+---
+# playbook_name: quicklab_start.yml
+# desc: Setup VLANs and Bridges for kvm networks.
+# modules:
+#   - nmcli
+
+- name: "Start quicklab with 3 kvm VMs for OpenStack infrastructure"
+  strategy: debug
+  hosts: vi_nodes
+  become: true
+  remote_user: root
+  vars_files:
+    - 'vars/quicklab_kvm_openstack_config.yml'
+  roles:
+    - { role: kvm_host_setup }
+    - { role: kvm_network }
+
