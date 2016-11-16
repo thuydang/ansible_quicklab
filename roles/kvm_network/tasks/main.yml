@@ -34,7 +34,10 @@
   #  with_subelements: 
   #    - '{{kvm_guests}}'
   #    - network_interfaces
-  #
+  
+###################################
+## CLEAN UP
+##########################
 - name: Stage 2 | KVM Network | REMOVE host bridges
   nmcli: type=bridge cname={{item.name}} ifname={{item.name}} ip4={{item.ip4}} gw4={{item.gw4}} state=absent
   become: yes

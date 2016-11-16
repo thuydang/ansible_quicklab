@@ -14,10 +14,11 @@ e.g., OpenStack.
 
 = Roles:
 == kvm_host_setup: 
-* Install packages on kvm host
+* Install packages on (this) host to support virtualization with kvm.
 
 == kvm_network: 
-* create bridges and tap/tun interfaces for the VMs
+* create bridges and tap/tun interfaces for the VMs with the extension of ansible-nmcli module (https://github.com/thuydang/ansible-nmcli.git; version: origin/ansible-nmcli-role).
+* Configure iptables/firewall for routing traffic of bridges.
 * The variables allows to see how the network is configured (default/main.yml):
 
 == kvm_manage: 
@@ -30,10 +31,20 @@ e.g., OpenStack.
 
 = Usage:
 
-ansible-playbook -i inventory_file site.yml --limit tutorial_hosts
-ansible-playbook -i inventory_file  tutorial.yml
+# ansible-playbook -i inventory_file site.yml --limit tutorial_hosts
+# ansible-playbook -i inventory_file  tutorial.yml
+# ansible localhost -i inventory/vfoss_dev -m alternatives -a "link=/usr/bin/psql name=pgsql-psql path=/usr/pgsql-9.4/bin/psql" -s -vvvv
 
-ansible localhost -i inventory/vfoss_dev -m alternatives -a "link=/usr/bin/psql name=pgsql-psql path=/usr/pgsql-9.4/bin/psql" -s -vvvv
+* Setup
+
+ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack.yml -vvv
+
+* Shutdown: cleanup everything.
+
+ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack_shutdown.yml -vvv
+
+= Work log
+* can setup bridge & tun devs. Start kvm
 ----------
 REF
 
