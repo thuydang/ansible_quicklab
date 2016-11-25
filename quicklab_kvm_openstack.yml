@@ -12,7 +12,8 @@
   vars_files:
     - 'vars/quicklab_kvm_openstack_config.yml'
   roles:
-    - { role: kvm_host_setup }
-    - { role: kvm_network }
+    - { role: kvm_host_setup, tags: testing, prepare }
+    - { role: kvm_network, tags: network }
+    - { role: debops.dnsmasq, tags: dnsmasq }
     #- { role: kvm_network }
 

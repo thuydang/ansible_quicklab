@@ -30,6 +30,10 @@ e.g., OpenStack.
 * Inventory files hold hosts group, each of which has a playbook, e.g., baremetal inventory, baremetal.yml
 
 = Usage:
+== Install libraries and roles
+ansible-galaxy install -r requirements.yml
+
+== Start lab
 
 # ansible-playbook -i inventory_file site.yml --limit tutorial_hosts
 # ansible-playbook -i inventory_file  tutorial.yml

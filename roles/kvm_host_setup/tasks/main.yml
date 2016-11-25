@@ -1,6 +1,14 @@
 ---
-# tasks file for kvm_host role
+# tasks file for kvm_host_setup role
 
 - name: "KVM virtualization packages installation"
   include: 'install.yml'
  
+- name: "KVM Workspace Setup"
+  file: path={{quicklab_workspace}}/{{item}} state=directory mode=0755
+  with_items:
+    - ['keys', 'images', 'instances', 'cloud-init']
+  #with_nested:
+  #  - ['test1', 'test2']
+  #  - ['bin', 'conf']
+

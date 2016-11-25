@@ -36,5 +36,7 @@
     - openssh-server 
     - sudo 
     - tcpdump
-      #- kvm-ipxe
+    - dnsmasq
+    #- resolvconf
+    #- kvm-ipxe
 

@@ -4,6 +4,7 @@
 # - src: mrlesmithjr.config-interfaces
 # - src: mrlesmithjr.kvm
 #
+- src: devops.dnsmasq
 
 # from github installing to a relative path
 #- src:  https://github.com/alcamie101/ansible-nmcli.git
