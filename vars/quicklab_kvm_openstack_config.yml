@@ -7,27 +7,19 @@ quicklab_workspace: "/mnt/nfv/kvm_openstack_lab"
 
 
 # Quicklab Virtual network config
-kvm_networks: # Public / private virtual Bridges http://www.linux-kvm.org/page/Networking#Private_Virtual_Bridge
+# Public / private virtual Bridges http://www.linux-kvm.org/page/Networking#Private_Virtual_Bridge
+kvm_networks: &virtnets #<-- yaml anchor
   - name: br_ql_mgmt
+    interface: br_ql_mgmt
+    ## Firewall
     ip4: 10.10.10.1/24
     gw4:
-
-  - name: br_ql_int
-    ip4: 10.20.20.1/24
-    gw4:
-
-  - name: br_ql_ext
-    ip4: 10.30.30.1/24
-    gw4:
-
-### DNSMASQ settings
-dnsmasq__interfaces:
-    # Name of the interface.
-  - interface: 'br_ql_mgmt'
+    ## dnsmasq
     # DNS A record of the interface.
+    #interface: br_ql_mgmt
     name: 'mgmt_switch'
     # Optional DNS CNAME records of the interface.
-    aliases: [ 'router']
+    aliases: [ 'mgmt_router']
     # First IP address in the DHCP range (index).
     dhcp_range_start: '10'
     # Last IP address in the DHCP range (index).
@@ -37,15 +29,48 @@ dnsmasq__interfaces:
     # DHCPv6 options configured on this interface.
     ipv6_mode: 'ra-names,ra-stateless,slaac'
 
+
+  - name: br_ql_int
+    interface: br_ql_int
+    ip4: 10.20.20.1/24
+    gw4:
+    ## dnsmasq
+    name: 'int_switch'
+    aliases: [ 'int_router']
+    dhcp_range_start: '10'
+    dhcp_range_end: '-10'
+    dhcp_lease: '24h'
+    ipv6_mode: 'ra-names,ra-stateless,slaac'
+
+
+  - name: br_ql_ext
+    interface: br_ql_ext
+    ip4: 10.30.30.1/24
+    gw4:
+    ## dnsmasq
+    name: 'ext_switch'
+    aliases: [ 'ext_router']
+    dhcp_range_start: '10'
+    dhcp_range_end: '-10'
+    dhcp_lease: '24h'
+    ipv6_mode: 'ra-names,ra-stateless,slaac'
+
+
+### DNSMASQ settings
+dnsmasq__interfaces: *virtnets #<-- yaml alias
+
 dnsmasq__tftp: false
 
 # Quicklab VMs Config
 kvm_guests: # kvm quest vm 
   - hostname: controller #insance_name?
     cpu: 1
-    ram: 1024M
+    ram: 2024M
     vnc: :0
-    image: cirros-0.3.4-x86_64-disk.img # base image in images_dir
+    #image: cirros-0.3.4-x86_64-disk.img # base image in images_dir
+    image: Fedora-Cloud-Base-24-1.2.x86_64.qcow2 # base image in images_dir
+    image_format: qcow2
+    image_size: 40G
     network_interfaces: #ref: https://github.com/mrlesmithjr/ansible-config-interfaces
       - name: eth0
         bootproto: dhcp
@@ -86,6 +111,88 @@ kvm_guests: # kvm quest vm
         network_name: br_ql_ext # Bridge name to be connected
         #addl_settings:
         #- bond_master bond2
+  - hostname: network
+    cpu: 1
+    ram: 1024M
+    vnc: :1
+    image: Fedora-Cloud-Base-24-1.2.x86_64.qcow2
+    image_format: qcow2
+    image_size: 40G
+    network_interfaces: 
+      - name: eth0
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_mgmt 
+        #
+      - name: eth1
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_int
+        #- bond_master bond0
+      - name: eth2
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_ext
+        #
+  - hostname: compute
+    cpu: 1
+    ram: 4024M
+    vnc: :2
+    image: Fedora-Cloud-Base-24-1.2.x86_64.qcow2
+    image_format: qcow2
+    image_size: 40G
+    network_interfaces: 
+      - name: eth0
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_mgmt 
+        #
+      - name: eth1
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_int
+        #- bond_master bond0
+      - name: eth2
+        bootproto: dhcp
+        configure: true
+        comment:
+        method: manual
+        address:
+        netmask:
+        netmask_cidr:
+        gateway:
+        network_name: br_ql_ext
+        #
 
 ### Openstack vars
 
