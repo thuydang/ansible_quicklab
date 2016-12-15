@@ -1,9 +1,9 @@
-=Fast Provisioning OpenStack Virtualization Infrastructure with Ansibel Quicklab
+# Fast Provisioning OpenStack Virtualization Infrastructure with Ansibel Quicklab
 
 Scenario: The idea is using ansible scripts to start a few VMs on a host (localhost) and automatically setup these VMs to form a virtualization infrastructure e.g., OpenStack. This is a portable setup showing the essence of virtualization, suiltable for exeriment and education purposes. Enjoy!
 
  
-=Objectives:
+# Objectives:
 
 Network Connectivity for OpenStack Infrastructure Nodes [1]
 
@@ -11,12 +11,12 @@ We want to create 3 VMs (guests) with KVM on a physical host. The VMs will be se
 
 For the purpose, we can use ansible scripts to configure the networks and make it ready to start the VMs. Step-by-step tutorial of the process is described following.
 
-Minimal hardware requirement:
+## Minimal hardware requirement:
 
  * Generated lab with 3 VMs uses 10Gb. More space should be available depending on OpenStack installatin and use.
  * Plenty of RAM, 5Gb may be enough for small OpenStack deployment.
 
-=Quickstart:
+# Quickstart:
 Download ansible_quicklab scripts
 
 Clone ansible quicklab from Gibhub:
@@ -25,7 +25,7 @@ Clone ansible quicklab from Gibhub:
 https://github.com/thuydang/ansible_quicklab.git
 ```
 
-==Install required ansible roles
+## Install required ansible roles
 
 The dependency modules are provided in requirements.yml. It contains customized modules for network and kvm commands. Install the modules with ansible-galaxy:
 
@@ -33,10 +33,10 @@ The dependency modules are provided in requirements.yml. It contains customized 
 ansible-galaxy install -r requirements.yml
 ```
 
-==Configure ansible variables to reflect the network architecture
+## Configure ansible variables to reflect the network architecture
 
 Sample configurations of the network and nodes are in vars/quicklab_kvm_openstack_config.yml. We will update the file with our configurations. The parameter are self-explainatory.
-===Quicklab directory
+### Quicklab directory
 
 The directory contains everything related to our quicklab project, where kvm images, instances, etc are stored. Replace the path with your location.
 
@@ -61,7 +61,7 @@ The full folder structure will be automatically generated under that location:
 └── keys
 ```
  
-===kvm_networks section
+### kvm_networks section
 
  
 
@@ -87,10 +87,10 @@ Configure bridge name, IP range:
     # DHCPv6 options configured on this interface.
     ipv6_mode: 'ra-names,ra-stateless,slaac'
 
-===kvm_guests section
+### kvm_guests section
 
 Configure VM names, interfaces:
-
+```
 kvm_guests: # kvm quest vm
   - hostname: controller #insance_name?
     cpu: 1
@@ -113,7 +113,8 @@ kvm_guests: # kvm quest vm
         netmask_cidr:
         gateway:
         network_name: br_ql_mgmt # Bridge iface to be connected
-
+```
+	
 'image' holds the base image for our VM nodes. We use 'Fedora-Cloud-Base-24-1.2.x86_64.qcow2' whick can be download from Fedora project. Choose the image with qcow2 format. Alternative, you can also create your own base image with pre-installed packages. 
 
 ```
@@ -122,13 +123,13 @@ https://getfedora.org/atomic/download/
 
 Note: automatic download of image is not yet implemented. Please download the exact image and place it in {{quicklab_workspace}}/images folder. You may have to create the images folder structure.
 
-====Generate MAC addresses for the interfaces from console:
+#### Generate MAC addresses for the interfaces from console:
 
 ```
 $>MACADDR="52:54:00:$(dd if=/dev/urandom bs=512 count=1 2>/dev/null | md5sum | sed 's/^\(..\)\(..\)\(..\).*$/\1:\2:\3/')"; echo $MACADDR
 ```
 
-==Create OpenStack lab
+## Create OpenStack lab
 
 Hopfully we don't miss anything. Now we can get things ready by running ansible playbook:
 
@@ -137,7 +138,7 @@ $> sudo ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack.yml
 ```
 
 ansible-playbook option -vvvv will ouput everything during the setup.
-==Create cloud-init.iso
+## Create cloud-init.iso
 
 Incase a cloud image is used as base image for our VMs, we need to start the VMs with a cloud-init.iso, which can be configure to inject credential and ssh keys for the default user ('fedora' for fedora cloud image). You can create your own cloud init iso. There is a cloud-init.iso, which can be download from the project's github:
 
@@ -163,7 +164,7 @@ ssh_pwauth: True
 #   - ... ssh-rsa new public key here user@host ...
 ```
 
-Finally Start The VMs
+## Finally Start The VMs
 
 A bash script is generated, which can be executed to start the VMs:
 
@@ -188,7 +189,7 @@ qemu-kvm -hda /mnt/nfv/kvm_openstack_lab/instances/controller.qcow2 \
     &
 ```
 
-=Conclusion
+# Conclusion
 
 We now ready to install OpenStack on the generated VMs!
 I used puppet to setup the old OpenStack Juno on the same virtual infrastructure, which is avalable here:
@@ -202,13 +203,15 @@ If you are not ready with ansible, I also created a bunch of Bash scripts to ach
 ```
 https://github.com/thuydang/kvm_scripts
 ```
+Thanks for reading. Please fork, try, imporve and create pull requests!!
 
-=Resources:
+# Resources:
 
   * https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux_OpenStack_Platform/5/html/Cloud_Administrator_Guide/section_networking-arch.html
 
 
-= Old 
+# Old 
+
 Ansible scripts for creating VMs for quick lab using kvm. All resources are created in this 
 directory.
 
