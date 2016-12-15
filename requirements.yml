@@ -26,5 +26,9 @@
 #
 ## checkout from branch
 - src:  https://github.com/thuydang/ansible-nmcli.git
-  version: origin/ansible-nmcli-role
+  version: origin/vfoss_tutorial
+  path: library_ext/
+
+- src:  https://github.com/thuydang/ansible-nmcli.git
+  version: origin/vfoss_tutorial
   path: library_ext/
