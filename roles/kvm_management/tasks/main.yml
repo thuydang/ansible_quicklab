@@ -1,6 +1,28 @@
 ---
 # tasks file for kvm_management
-- name: Stage 5 | KVM INSTANCE | TBD
+- name: Stage 5 | KVM INSTANCE | Create Instances
   kvm_cmd: action=instance-create image_base='{{quicklab_workspace}}/images/{{item.image}}' image_format='qcow2' instance_name='{{quicklab_workspace}}/instances/{{item.hostname}}.{{item.image_format}}' image_size={{item.image_size}}
   with_items:
     - "{{kvm_guests}}"
+
+- name: Stage 5 | KVM INSTANCE | Generate sh script to boot instances
+  template:
+    src: boot_vms.sh.j2
+    dest: '{{quicklab_workspace}}/boot_vms.sh'
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+
+      #- name: Stage 5 | KVM INSTANCE | Boot Instances, pause 5s between
+      #  kvm_cmd: action=boot instance_name='{{quicklab_workspace}}/instances/{{item.hostname}}.{{item.image_format}}' instance_cpus={{item.cpu}} instance_ram={{item.ram}} instance_vnc={{item.vnc}} instance_cdrom="/mnt/nfv/kvm_openstack_lab/cloud-init/default/default-cidata.iso" 
+      #  when: (boot_instances | default('no') | bool)
+      #  with_items:
+      #    - "{{kvm_guests}}"
+      #  loop_control:
+      #        pause: 5
+
+      #- name: Stage 5 | KVM INSTANCE | Shutdown Instances
+      #  kvm_cmd: action=instance-create image_base='{{quicklab_workspace}}/images/{{item.image}}' image_format='qcow2' instance_name='{{quicklab_workspace}}/instances/{{item.hostname}}.{{item.image_format}}' image_size={{item.image_size}}
+      #  when: (boot_instances | default('no') | bool)
+      #  with_items:
+      #    - "{{kvm_guests}}"

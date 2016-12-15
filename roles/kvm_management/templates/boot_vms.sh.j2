@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Author thuydang.de@gmail.com
+
+set -x
+
+{#  kvm_cmd: action=boot instance_name='{{quicklab_workspace}}/instances/{{item.hostname}}.{{item.image_format}}' instance_cpus={{item.cpu}} instance_ram={{item.ram}} instance_vnc={{item.vnc}} instance_cdrom="/mnt/nfv/kvm_openstack_lab/cloud-init/default/default-cidata.iso" #}
+
+{% for item in kvm_guests %}
+
+qemu-kvm -hda {{quicklab_workspace}}/instances/{{item.hostname}}.{{item.image_format}} \
+    {% if item.cpu_conf is defined %}
+    -cpu core2duo,+vmx -enable-kvm \
+    {% endif %}
+    -smp cpus={{item.cpu}} \
+    -m {{item.ram}} -vnc {{item.vnc}} \
+    -cdrom cloud-init/default/default-cidata.iso \
+    {% for router in kvm_networks %}
+    -device e1000,netdev={{router.interface}},mac={{item.network_interfaces[loop.index0].hwaddr}} -netdev tap,id={{router.interface}},script=no,downscript=no \
+    {% endfor %}&
+
+    sleep 3
+{% endfor %}

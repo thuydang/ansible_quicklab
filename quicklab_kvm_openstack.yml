@@ -13,8 +13,10 @@
     - 'vars/quicklab_kvm_openstack_config.yml'
   roles:
     - { role: kvm_host_setup, tags: testing, prepare }
-    - { role: kvm_network, tags: network }
+    - { role: kvm_network, shutdown: false, tags: network }
     - { role: debops.dnsmasq, tags: dnsmasq }
     - { role: kvm_management, tags: management }
     #- { role: kvm_network }
+    # TODO - { role: kvm_management, boot_instances: true, tags: boot_instances }
+    # TODO - { role: kvm_management, boot_instances: false, tags: stop_instances, shutdown_instances }
 

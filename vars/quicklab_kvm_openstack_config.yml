@@ -9,7 +9,7 @@ quicklab_workspace: "/mnt/nfv/kvm_openstack_lab"
 # Quicklab Virtual network config
 # Public / private virtual Bridges http://www.linux-kvm.org/page/Networking#Private_Virtual_Bridge
 kvm_networks: &virtnets #<-- yaml anchor
-  - name: br_ql_mgmt
+  - name: mgmt_switch
     interface: br_ql_mgmt
     ## Firewall
     ip4: 10.10.10.1/24
@@ -17,7 +17,7 @@ kvm_networks: &virtnets #<-- yaml anchor
     ## dnsmasq
     # DNS A record of the interface.
     #interface: br_ql_mgmt
-    name: 'mgmt_switch'
+    #name: 'mgmt_switch'
     # Optional DNS CNAME records of the interface.
     aliases: [ 'mgmt_router']
     # First IP address in the DHCP range (index).
@@ -30,12 +30,12 @@ kvm_networks: &virtnets #<-- yaml anchor
     ipv6_mode: 'ra-names,ra-stateless,slaac'
 
 
-  - name: br_ql_int
+  - name: int_switch
     interface: br_ql_int
     ip4: 10.20.20.1/24
     gw4:
     ## dnsmasq
-    name: 'int_switch'
+    #name: 'int_switch'
     aliases: [ 'int_router']
     dhcp_range_start: '10'
     dhcp_range_end: '-10'
@@ -43,12 +43,12 @@ kvm_networks: &virtnets #<-- yaml anchor
     ipv6_mode: 'ra-names,ra-stateless,slaac'
 
 
-  - name: br_ql_ext
+  - name: ext_switch
     interface: br_ql_ext
     ip4: 10.30.30.1/24
     gw4:
     ## dnsmasq
-    name: 'ext_switch'
+    #name: 'ext_switch'
     aliases: [ 'ext_router']
     dhcp_range_start: '10'
     dhcp_range_end: '-10'
@@ -65,6 +65,7 @@ dnsmasq__tftp: false
 kvm_guests: # kvm quest vm 
   - hostname: controller #insance_name?
     cpu: 1
+    cpu_conf: "core2duo,+vmx -enable-kvm"
     ram: 2024M
     vnc: :0
     #image: cirros-0.3.4-x86_64-disk.img # base image in images_dir
@@ -73,6 +74,8 @@ kvm_guests: # kvm quest vm
     image_size: 40G
     network_interfaces: #ref: https://github.com/mrlesmithjr/ansible-config-interfaces
       - name: eth0
+        hwaddr: de:ad:be:80:7c:53
+        #bash_>MACADDR="52:54:00:$(dd if=/dev/urandom bs=512 count=1 2>/dev/null | md5sum | sed 's/^\(..\)\(..\)\(..\).*$/\1:\2:\3/')"; echo $MACADDR
         bootproto: dhcp
         configure: true
         comment:
@@ -88,6 +91,7 @@ kvm_guests: # kvm quest vm
 #        addl_settings:
 #          - bond_master bond0
       - name: eth1
+        hwaddr: de:ad:be:80:7c:54
         bootproto: dhcp
         configure: true
         comment:
@@ -100,6 +104,7 @@ kvm_guests: # kvm quest vm
         #addl_settings:
         #- bond_master bond0
       - name: eth2
+        hwaddr: de:ad:be:80:7c:55
         bootproto: dhcp
         configure: true
         comment:
@@ -120,6 +125,7 @@ kvm_guests: # kvm quest vm
     image_size: 40G
     network_interfaces: 
       - name: eth0
+        hwaddr: de:ad:be:9d:79:c1
         bootproto: dhcp
         configure: true
         comment:
@@ -131,6 +137,7 @@ kvm_guests: # kvm quest vm
         network_name: br_ql_mgmt 
         #
       - name: eth1
+        hwaddr: de:ad:be:9d:79:c2
         bootproto: dhcp
         configure: true
         comment:
@@ -142,6 +149,7 @@ kvm_guests: # kvm quest vm
         network_name: br_ql_int
         #- bond_master bond0
       - name: eth2
+        hwaddr: de:ad:be:9d:79:c3
         bootproto: dhcp
         configure: true
         comment:
@@ -161,6 +169,7 @@ kvm_guests: # kvm quest vm
     image_size: 40G
     network_interfaces: 
       - name: eth0
+        hwaddr: de:ad:be:fb:76:b8
         bootproto: dhcp
         configure: true
         comment:
@@ -172,6 +181,7 @@ kvm_guests: # kvm quest vm
         network_name: br_ql_mgmt 
         #
       - name: eth1
+        hwaddr: de:ad:be:fb:76:b9
         bootproto: dhcp
         configure: true
         comment:
@@ -183,6 +193,7 @@ kvm_guests: # kvm quest vm
         network_name: br_ql_int
         #- bond_master bond0
       - name: eth2
+        hwaddr: de:ad:be:fb:76:c0
         bootproto: dhcp
         configure: true
         comment:

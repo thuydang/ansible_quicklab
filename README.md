@@ -39,13 +39,32 @@ ansible-galaxy install -r requirements.yml
 # ansible-playbook -i inventory_file  tutorial.yml
 # ansible localhost -i inventory/vfoss_dev -m alternatives -a "link=/usr/bin/psql name=pgsql-psql path=/usr/pgsql-9.4/bin/psql" -s -vvvv
 
+* Test run single Module:
+    source ansible_src/ansible/hacking/env-setup
+
+Create instance
+
+    sudo ansible_src/ansible/hacking/test-module -m ansible_quicklabs/library_ext/ansible-kvm/library/kvm_cmd.py -a "action='instance-create' image_base='/mnt/nfv/kvm_openstack_lab/images/Fedora-Cloud-Base-24-1.2.x86_64.qcow2' image_format='qcow2' instance_name='/mnt/nfv/kvm_openstack_lab/instances/controller.qcow2' image_size=8G"
+
+Boot instance
+
+	  sudo ansible_src/ansible/hacking/test-module -m ansible_quicklabs/library_ext/ansible-kvm/library/kvm_cmd.py \
+			  -a "action='boot' instance_name='/mnt/nfv/kvm_openstack_lab/instances/controller.qcow2' instance_cpus=1 instance_ram=1024 instance_vnc=:1 instance_cdrom=/mnt/nfv/kvm_openstack_lab/cloud-init/default/default-cidata.iso"
+
+
 * Setup
 
-ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack.yml -vvv
+Run all roles:
+
+    ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack.yml -vvv
+
+Run roles with tags:
+
+    ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack.yml --tags dnsmasq -vvvv
 
 * Shutdown: cleanup everything.
 
-ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack_shutdown.yml -vvv
+    ansible-playbook -i inventory/vi_nodes quicklab_kvm_openstack_shutdown.yml -vvv
 
 = Work log
 * can setup bridge & tun devs. Start kvm
