@@ -29,12 +29,6 @@
     - '{{kvm_guests}}'
     - network_interfaces
 
-  #- name: Stage 2 | KVM Network | Connect tap and bridges with "nmcli con mod"
-  #  nmcli: type=bridge-slave cname={{item.0.hostname}}-{{item.1.name}} master={{item.1.network_name}} state=present
-  #  with_subelements: 
-  #    - '{{kvm_guests}}'
-  #    - network_interfaces
-  
 - name: Stage 3 | KVM Network | Configure NAT / MASQUERADE 
   # sudo iptables -F
   # sudo iptables -t nat -F
