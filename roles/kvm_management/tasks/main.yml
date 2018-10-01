@@ -1,5 +1,6 @@
 ---
 # tasks file for kvm_management
+
 - name: Stage 5 | KVM INSTANCE | Create Instances
   kvm_cmd: action=instance-create image_base='{{quicklab_workspace}}/images/{{item.image}}' image_format='qcow2' instance_name='{{quicklab_workspace}}/instances/{{item.hostname}}.{{item.image_format}}' image_size={{item.image_size}}
   with_items:

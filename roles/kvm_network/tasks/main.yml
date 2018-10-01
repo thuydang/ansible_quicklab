@@ -5,10 +5,11 @@
   dnf: name={{ item }} state=installed
   with_items:
     - NetworkManager-glib
-    - libnm-qt-devel.x86_64
+    #- libnm-qt-devel.x86_64
     - nm-connection-editor.x86_64
     - libsemanage-python
     - policycoreutils-python
+    - python2-netaddr
 
 - name: Stage 2 | KVM Network | Configure host bridges
   nmcli: type=bridge cname={{item.name}} ifname={{item.name}} ip4={{item.ip4}} gw4={{item.gw4}} state=present

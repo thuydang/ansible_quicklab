@@ -4,7 +4,9 @@
 # - src: mrlesmithjr.config-interfaces
 # - src: mrlesmithjr.kvm
 #
-- src: devops.dnsmasq
+# - src: devops.dnsmasq
+# - src: debops.dnsmasq
+#- src: bertvv.dnsmasq
 
 # from github installing to a relative path
 #- src:  https://github.com/alcamie101/ansible-nmcli.git
@@ -27,4 +29,8 @@
 ## checkout from branch
 - src:  https://github.com/thuydang/ansible-nmcli.git
   version: origin/ansible-nmcli-role
+  path: library_ext/
+
+- src:  https://github.com/thuydang/ansible-kvm.git
+  version: origin/vfoss_tutorial
   path: library_ext/

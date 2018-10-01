@@ -1,5 +1,5 @@
 ---
-quicklab_workspace: "/mnt/nfv/kvm_openstack_lab" 
+quicklab_workspace: "/home/dang/data/workspace_pj/01_openstack/os_dev_lab" 
 #Path, where the kvm VMs and related files are stored.
 
 ### Host vars. Quicklab VMs
@@ -66,10 +66,10 @@ kvm_guests: # kvm quest vm
   - hostname: controller #insance_name?
     cpu: 1
     cpu_conf: "core2duo,+vmx -enable-kvm"
-    ram: 2024M
+    ram: 2524M
     vnc: :0
     #image: cirros-0.3.4-x86_64-disk.img # base image in images_dir
-    image: Fedora-Cloud-Base-24-1.2.x86_64.qcow2 # base image in images_dir
+    image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2 # base image in images_dir
     image_format: qcow2
     image_size: 40G
     network_interfaces: #ref: https://github.com/mrlesmithjr/ansible-config-interfaces
@@ -120,7 +120,7 @@ kvm_guests: # kvm quest vm
     cpu: 1
     ram: 1024M
     vnc: :1
-    image: Fedora-Cloud-Base-24-1.2.x86_64.qcow2
+    image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2
     image_format: qcow2
     image_size: 40G
     network_interfaces: 
@@ -164,7 +164,7 @@ kvm_guests: # kvm quest vm
     cpu: 1
     ram: 4024M
     vnc: :2
-    image: Fedora-Cloud-Base-24-1.2.x86_64.qcow2
+    image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2
     image_format: qcow2
     image_size: 40G
     network_interfaces: 
