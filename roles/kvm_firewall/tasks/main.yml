@@ -31,6 +31,17 @@
   with_items:
     - "{{kvm_networks}}"
 
+- name: Stage 3 | KVM Network | Configure Firewall FWD
+  iptables: action=insert chain=FORWARD source={{item.ip4}} in_interface={{item.name}} jump=ACCEPT comment='kvm quicklab'
+  with_items:
+    - "{{kvm_networks}}"
+
+- name: Stage 3 | KVM Network | Configure Firewall FWD
+  iptables: action=insert chain=FORWARD destination={{item.ip4}} out_interface={{item.name}} jump=ACCEPT comment='kvm quicklab'
+  with_items:
+    - "{{kvm_networks}}"
+
+
 - name: Stage 3 | KVM Network | Configure NAT / MASQUERADE 
   # sudo iptables -F
   # sudo iptables -t nat -F
@@ -64,8 +75,6 @@
   # note: only -o br_name not working. need -s ip/mask
   #iptables: table=nat action=append chain=POSTROUTING source={{item.ip4}} jump=MASQUERADE
   # Only the last rule get applied -> ansible problem????
-  iptables: action=insert chain=FORWARD source={{item.ip4}} in_interface={{item.name}} jump=ACCEPT comment='kvm quicklab'
-  iptables: action=insert chain=FORWARD destination={{item.ip4}} out_interface={{item.name}} jump=ACCEPT comment='kvm quicklab'
   iptables: 
     table: nat
     chain: POSTROUTING
