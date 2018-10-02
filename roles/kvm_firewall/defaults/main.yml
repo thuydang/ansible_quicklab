@@ -1,0 +1,3 @@
+---
+# defaults file for kvm_firewall
+kvm_firewall_version: "0.0.1"
