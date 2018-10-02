@@ -14,6 +14,7 @@
   roles:
     - { role: kvm_host_setup, tags: testing, prepare }
     - { role: kvm_network, shutdown: false, tags: network }
+    - { role: kvm_firewall, shutdown: false, tags: firewall }
     - { role: debops.dnsmasq, tags: dnsmasq }
     - { role: kvm_management, tags: management }
     #- { role: kvm_network }

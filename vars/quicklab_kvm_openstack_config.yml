@@ -13,6 +13,7 @@ kvm_networks: &virtnets #<-- yaml anchor
     interface: br_ql_mgmt # TODO not used, check consistency name vs interface.
     ## Firewall
     ip4: 10.10.10.1/24
+    subnet: 10.10.10.0/24
     gw4:
     ## dnsmasq
     # DNS A record of the interface.
@@ -33,6 +34,7 @@ kvm_networks: &virtnets #<-- yaml anchor
   - name: br_ql_int
     interface: br_ql_int
     ip4: 10.20.20.1/24
+    subnet: 10.20.20.0/24
     gw4:
     ## dnsmasq
     #name: 'int_switch'
@@ -46,6 +48,7 @@ kvm_networks: &virtnets #<-- yaml anchor
   - name: br_ql_ext
     interface: br_ql_ext
     ip4: 10.30.30.1/24
+    subnet: 10.30.30.0/24
     gw4:
     ## dnsmasq
     #name: 'ext_switch'
