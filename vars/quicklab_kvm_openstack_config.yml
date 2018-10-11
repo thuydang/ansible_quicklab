@@ -72,7 +72,8 @@ kvm_guests: # kvm quest vm
     ram: 2524M
     vnc: :0
     #image: cirros-0.3.4-x86_64-disk.img # base image in images_dir
-    image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2 # base image in images_dir
+    #image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2 # base image in images_dir
+    image: CentOS-7-x86_64-GenericCloud-1503.qcow2
     image_format: qcow2
     image_size: 40G
     network_interfaces: #ref: https://github.com/mrlesmithjr/ansible-config-interfaces
@@ -123,7 +124,8 @@ kvm_guests: # kvm quest vm
     cpu: 1
     ram: 1024M
     vnc: :1
-    image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2
+    #image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2
+    image: CentOS-7-x86_64-GenericCloud-1503.qcow2
     image_format: qcow2
     image_size: 40G
     network_interfaces: 
@@ -165,11 +167,13 @@ kvm_guests: # kvm quest vm
         #
   - hostname: compute
     cpu: 1
+    cpu_conf: "core2duo,+vmx -enable-kvm"
     ram: 4024M
     vnc: :2
-    image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2
+    #image: Fedora-Cloud-Base-28-1.1.x86_64.qcow2
+    image: CentOS-7-x86_64-GenericCloud-1503.qcow2
     image_format: qcow2
-    image_size: 40G
+    image_size: 200G
     network_interfaces: 
       - name: eth0
         hwaddr: de:ad:be:fb:76:b8

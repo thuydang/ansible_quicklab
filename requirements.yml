@@ -5,7 +5,7 @@
 # - src: mrlesmithjr.kvm
 #
 # - src: devops.dnsmasq
-# - src: debops.dnsmasq
+#- src: debops.dnsmasq
 #- src: bertvv.dnsmasq
 
 # from github installing to a relative path
