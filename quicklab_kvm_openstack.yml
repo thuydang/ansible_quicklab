@@ -16,7 +16,7 @@
     - { role: kvm_network, shutdown: false, tags: network }
     - { role: kvm_firewall, shutdown: false, tags: firewall }
     - { role: debops.dnsmasq, tags: dnsmasq }
-    - { role: kvm_management, tags: management }
+    - { role: kvm_management, tags: management, create_instances }
     #- { role: kvm_network }
     # TODO - { role: kvm_management, boot_instances: true, tags: boot_instances }
     # TODO - { role: kvm_management, boot_instances: false, tags: stop_instances, shutdown_instances }
